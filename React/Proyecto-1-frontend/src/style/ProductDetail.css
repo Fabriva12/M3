@@ -1,0 +1,115 @@
+.detail-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3.0rem;
+    padding: 4.0rem;
+    align-items: start;
+}
+
+
+.detail-container-img {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.detail-container-img img {
+    width: 100%;
+    max-width: 35.0rem;
+    height: auto;
+    border-radius: 0.4rem;
+    object-fit: cover;
+}
+
+
+.detail-container {
+    width: 100%;
+    min-height: 30.9rem;
+    background: #FFFFFF;
+    border-radius: 0.4rem;
+    border: 0.1rem solid #DEE1E6FF;
+    box-shadow: 0 0.1rem 0.3rem #171a1f17;
+    padding: 2.0rem;
+
+    display: flex;
+    flex-direction: column;
+}
+
+
+.detail-container h1 {
+    font-family: Archivo, sans-serif;
+    font-size: 2.3rem;
+    line-height: 2.8rem;
+    font-weight: 700;
+    color: #171A1FFF;
+    margin-bottom: 1.5rem;
+}
+
+
+.detail-container h2 {
+    font-family: Archivo, sans-serif;
+    font-size: 1.5rem;
+    line-height: 2.0rem;
+    font-weight: 600;
+    color: #636AE8FF;
+    margin-bottom: 1.0rem;
+}
+
+
+.detail-container p {
+    font-family: Inter, sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.3rem;
+    font-weight: 400;
+    color: #565D6DFF;
+    margin-bottom: 1.0rem;
+}
+
+
+.detail-container h3 {
+    font-family: Inter, sans-serif;
+    font-size: 1.0rem;
+    line-height: 1.6rem;
+    font-weight: 400;
+    color: #171A1FFF;
+    margin-bottom: 2.0rem;
+}
+
+.detail-container .btn {
+    top: 27.1rem;
+    left: 1.3rem;
+    width: 9.5rem;
+    height: 2.5rem;
+    padding: 0 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Inter;
+    font-size: 0.9rem;
+    line-height: 1.4rem;
+    font-weight: 500;
+    color: #FFFFFFFF;
+    background: #636AE8FF;
+    opacity: 1;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    border-color: #000000FF;
+    border-style: solid;
+}
+
+
+.detail-container .btn:hover {
+    color: #FFFFFFFF;
+    background: #636AE8FF;
+}
+
+
+.detail-container .btn:hover:active {
+    color: #FFFFFFFF;
+    background: #636AE8FF;
+}
+
+
+.detail-container .btn:disabled {
+    opacity: 0.4;
+}
