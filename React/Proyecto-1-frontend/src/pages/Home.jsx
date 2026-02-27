@@ -1,5 +1,5 @@
 
-import "../style/Home.css";
+import "./Home.css";
 function Home({ goTo }) {
     return (
         <section className="home-container">

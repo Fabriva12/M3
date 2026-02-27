@@ -1,5 +1,5 @@
 
-import "../style/Header.css";
+import "./Header.css";
 import logo from "../img/icons/lucide-PawPrint-Outlined.svg";
 function Header({ goTo }) {
     return (
@@ -13,6 +13,8 @@ function Header({ goTo }) {
             <nav>
                 <a className="nav-link" onClick={() => goTo("home")}>Inicio</a>
                 <a className="nav-link" onClick={() => goTo("catalog")}>Catálogo</a>
+                <a className="nav-link" onClick={() => goTo("admin")}>Administración</a>
+                <a className="nav-link" onClick={() => goTo("contact")}>Contacto</a>
             </nav>
         </header>
     );
