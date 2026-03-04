@@ -24,11 +24,10 @@
 .product-table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
+    table-layout: auto;
 }
 
 th {
-    width: 16.66%;
     font-family: Inter;
     font-size: 0.9rem;
     line-height: 1.3rem;
@@ -39,7 +38,6 @@ th {
 }
 
 td {
-    width: 16.66%;
     font-family: Inter;
     font-size: 0.9rem;
     line-height: 1.3rem;
@@ -93,6 +91,7 @@ td {
     display: flex;
     gap: 0.8rem;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .create-container {
