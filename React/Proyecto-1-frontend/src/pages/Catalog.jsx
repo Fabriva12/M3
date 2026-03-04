@@ -1,13 +1,12 @@
 
-import data from "../data/products.json";
-import "../style/Catalog.css";
+import "./Catalog.css";
 
-function Catalog({ goTo }) {
+function Catalog({ goTo, products }) {
     return (
         <div className="catalog-page">
             <h1>Catálogo de productos</h1>
             <section className="catalog-container">
-                {data.map((product) => (
+                {products.map((product) => (
                     <div key={product.id} className="card">
                         <img src={product.imagen} alt={product.nombre} />
                         <h2>{product.nombre}</h2>
