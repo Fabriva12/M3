@@ -18,13 +18,13 @@ function CreateUser({ goTo, setLoading }) {
             return;
         }
         const user = {
-            userName: event.target.user.value,
-            userEmail: event.target.email.value,
-            userPassword: password,
-            role: "user",
+            nombre: event.target.user.value,
+            correo: event.target.email.value,
+            contraseña: password,
+            role: "admin",
         }
         try {
-            const response = await axios.post('', user);
+            const response = await axios.post('http://127.0.0.1:5000/user/register', user);
             console.log('User created:', response.data);
             setMessage("Usuario creado correctamente ✅");
             event.target.reset();

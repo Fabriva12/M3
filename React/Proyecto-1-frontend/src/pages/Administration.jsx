@@ -1,9 +1,33 @@
 
 import { useState } from "react";
 import "./Administration.css";
+import axios from "axios";
+import { data } from "react-router-dom";
 
+function ProductTable({ goTo, products, setProducts, setLoading, }) {
+    const token = localStorage.getItem("token");
+    if (localStorage.getItem("role") !== "admin") {
+        return <p>No tienes permiso para acceder a esta página.</p>;
+    }
+    const deleteProduct = async (id) => {
+        setLoading(true);
 
-function ProductTable({ goTo, products, setProducts }) {
+        try {
+            await axios.delete(`http://127.0.0.1:5000/product/no_product/${id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            const updatedProducts = products.filter(p => p.id !== id);
+            setProducts(updatedProducts);
+
+        } catch (error) {
+            console.error("Error deleting product:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="edit-container">
@@ -42,11 +66,7 @@ function ProductTable({ goTo, products, setProducts }) {
                                         className="btn-edit"
                                         onClick={() => {
                                             if (window.confirm("¿Seguro que quieres eliminar este producto?")) {
-                                                const updatedProducts = products.filter(
-                                                    (p) => p.id !== product.id
-                                                );
-
-                                                setProducts(updatedProducts);
+                                                deleteProduct(product.id);
                                             }
                                         }}
                                     >
@@ -62,14 +82,15 @@ function ProductTable({ goTo, products, setProducts }) {
     );
 }
 
-function CreateP({ goTo, products, setProducts }) {
+function CreateP({ goTo, products, setProducts, setLoading, }) {
+    const token = localStorage.getItem("token");
 
     const [formData, setFormData] = useState({
         nombre: "",
         descripcion: "",
         precio: "",
         categoria: "",
-        urlImagen: "",
+        imagen: "",
         stock: ""
     });
 
@@ -80,28 +101,33 @@ function CreateP({ goTo, products, setProducts }) {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const newId =
-            products.length > 0
-                ? Math.max(...products.map(p => p.id)) + 1
-                : 1;
-
         const newProduct = {
-            id: newId,
             nombre: formData.nombre,
             descripcion: formData.descripcion,
             precio: Number(formData.precio),
             categoria: formData.categoria,
-
+            imagen: formData.urlImagen,
             stock: Number(formData.stock)
         };
-
-        setProducts([...products, newProduct]);
-
-        goTo("admin");
+        setLoading(true);
+        try {
+            const response = await axios.post("http://127.0.0.1:5000/product/new_product", newProduct, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            setProducts([...products, response.data]);
+            goTo("admin");
+        } catch (error) {
+            console.error("Error adding product:", error);
+        } finally {
+            setLoading(false);
+        }
     };
+
 
     return (
         <div className="create-container">
@@ -111,6 +137,7 @@ function CreateP({ goTo, products, setProducts }) {
                     <label className="form-label" htmlFor="nombre">Nombre:</label><br />
                     <input
                         type="text"
+                        id="nombre"
                         name="nombre"
                         placeholder="Nombre del producto"
                         value={formData.nombre}
@@ -119,6 +146,8 @@ function CreateP({ goTo, products, setProducts }) {
 
                     <label className="form-label" htmlFor="descripcion">Descripción:</label><br />
                     <textarea
+                        type="text"
+                        id="descripcion"
                         name="descripcion"
                         placeholder="Descripción detallada del producto"
                         value={formData.descripcion}
@@ -128,6 +157,7 @@ function CreateP({ goTo, products, setProducts }) {
                     <label className="form-label" htmlFor="precio">Precio:</label><br />
                     <input
                         type="number"
+                        id="precio"
                         name="precio"
                         placeholder="0.00"
                         value={formData.precio}
@@ -137,6 +167,7 @@ function CreateP({ goTo, products, setProducts }) {
                     <label className="form-label" htmlFor="categoria">Categoría:</label><br />
                     <input
                         type="text"
+                        id="categoria"
                         name="categoria"
                         placeholder="Categoría del producto"
                         value={formData.categoria}
@@ -146,15 +177,17 @@ function CreateP({ goTo, products, setProducts }) {
                     <label className="form-label" htmlFor="URL">URL imagen:</label><br />
                     <input
                         type="text"
-                        name="urlImagen"
+                        id="imagen"
+                        name="imagen"
                         placeholder="/ruta/imagen.jpg"
-                        value={formData.urlImagen}
+                        value={formData.imagen}
                         onChange={handleChange}
                     /><br /><br />
 
                     <label className="form-label" htmlFor="stock">Stock:</label><br />
                     <input
                         type="number"
+                        id="stock"
                         name="stock"
                         placeholder="0"
                         value={formData.stock}

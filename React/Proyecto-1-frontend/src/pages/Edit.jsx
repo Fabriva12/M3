@@ -1,7 +1,10 @@
 import { useState } from "react";
 import "./Edit.css";
-function Edit({ goTo, productId, products, setProducts }) {
+import axios from "axios";
+
+function Edit({ goTo, productId, products, setProducts, setLoading, }) {
     const product = products.find(p => p.id === Number(productId));
+    const token = localStorage.getItem("token");
 
     if (!product) {
         return <h2>Producto no encontrado</h2>;
@@ -11,7 +14,9 @@ function Edit({ goTo, productId, products, setProducts }) {
         nombre: product.nombre,
         precio: product.precio,
         categoria: product.categoria,
-        descripcion: product.descripcion
+        descripcion: product.descripcion,
+        imagen: product.imagen,
+        stock: product.stock
     });
 
     const handleChange = (e) => {
@@ -21,37 +26,25 @@ function Edit({ goTo, productId, products, setProducts }) {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const updatedProducts = products.map(p => {
-            if (p.id === Number(productId)) {
-                return {
-                    ...p,
-                    nombre: formData.nombre,
-                    precio: Number(formData.precio),
-                    categoria: formData.categoria,
-                    descripcion: formData.descripcion
-                };
-            }
-            return p;
-        });
+        setLoading(true);
+        try {
+            const response = await axios.put(`http://127.0.0.1:5000/product/upgrade_product/${productId}`, formData, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const updatedProducts = products.map(p => p.id === Number(productId) ? response.data : p);
+            setProducts(updatedProducts);
+            goTo("admin");
+        } catch (error) {
+            console.error("Error updating product:", error);
+        } finally {
+            setLoading(false);
+        }
+    }
 
-        console.log("Producto actualizado:", updatedProducts);
-
-        setProducts(updatedProducts);
-
-        goTo("admin");
-
-        setProducts(
-            products.map(p =>
-                p.id === Number(productId)
-                    ? { ...p, ...formData }
-                    : p
-            )
-        );
-
-        goTo("admin");
-    };
 
     return (
         <div className="edit-page">
@@ -89,6 +82,23 @@ function Edit({ goTo, productId, products, setProducts }) {
                         value={formData.descripcion}
                         onChange={handleChange}
                     /><br /><br />
+
+                    <label htmlFor="imagen">URL de la Imagen:</label><br />
+                    <input
+                        type="text"
+                        name="imagen"
+                        value={formData.imagen}
+                        onChange={handleChange}
+                    /><br /><br />
+
+                    <label htmlFor="stock">Stock:</label><br />
+                    <input
+                        type="number"
+                        name="stock"
+                        value={formData.stock}
+                        onChange={handleChange}
+                    /><br /><br />
+
                     <div className="btn-group">
                         <button className="save-btn" type="submit">Guardar Cambios</button>
 

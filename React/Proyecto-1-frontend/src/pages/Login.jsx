@@ -3,7 +3,7 @@ import axios from "axios";
 import { useState } from "react";
 import "./Login.css";
 
-function Login({ goTo, setLoading }) {
+function Login({ goTo, setLoading, setRole, setToken }) {
     const [user, setUser] = useState({
         userEmail: "",
         userPassword: ""
@@ -21,17 +21,23 @@ function Login({ goTo, setLoading }) {
         event.preventDefault();
         setLoading(true);
 
+        const loginData = {
+            correo: user.userEmail,
+            contraseña: user.userPassword
+        };
         try {
-            const response = await axios.post("http://localhost:8080/api/auth/login", { userEmail: user.userEmail, userPassword: user.userPassword });
+            const response = await axios.post("http://127.0.0.1:5000/user/login", loginData);
             if (response.data.success) {
                 const { token, user } = response.data;
 
                 localStorage.setItem("token", token);
                 localStorage.setItem("role", user.role);
+                setRole(user.role);
+                setToken(token);
                 setMessage("Inicio de sesión exitoso");
 
 
-                goTo("main");
+                goTo("home");
             }
             else
                 setMessage("Correo electrónico o contraseña incorrectos");
