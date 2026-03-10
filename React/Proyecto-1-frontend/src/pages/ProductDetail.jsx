@@ -1,9 +1,8 @@
 
-import data from "../data/products.json";
-import "../style/ProductDetail.css";
-function ProductDetail({ productId, goTo }) {
+import "./ProductDetail.css";
+function ProductDetail({ productId, goTo, products }) {
 
-    const product = data.find(p => p.id === productId);
+    const product = products.find(p => p.id === productId);
 
     if (!product) {
         return <h2>Producto no encontrado</h2>;
