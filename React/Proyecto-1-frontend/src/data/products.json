@@ -5,7 +5,7 @@
         "descripcion": "Collar resistente para perros de todos los tamaños.",
         "precio": 8500,
         "categoria": "Perros",
-        "imagen": "https://via.placeholder.com/300x300.png?text=Collar+de+cuero",
+        "imagen": "https://petculiari.com/cdn/shop/articles/collar-para-perro-cuero_1080x.jpg?v=1707758838",
         "stock": 12
     },
     {
@@ -14,7 +14,7 @@
         "descripcion": "Cama acolchada y cómoda para gatos de interior.",
         "precio": 12000,
         "categoria": "Gatos",
-        "imagen": "https://via.placeholder.com/300x300.png?text=Cama+para+gatos",
+        "imagen": "https://animall.com.mx/cdn/shop/files/camas_modernas_para_gatos.png?v=1756355634&width=713",
         "stock": 5
     },
     {
@@ -23,7 +23,7 @@
         "descripcion": "Pelota duradera ideal para juegos al aire libre.",
         "precio": 2500,
         "categoria": "Perros",
-        "imagen": "https://via.placeholder.com/300x300.png?text=Pelota+de+goma",
+        "imagen": "https://monococojugueterias.com/cdn/shop/files/MC091_2.png?v=1717080900",
         "stock": 30
     },
     {
@@ -32,7 +32,7 @@
         "descripcion": "Rascador vertical que ayuda a cuidar las uñas de tu gato.",
         "precio": 15000,
         "categoria": "Gatos",
-        "imagen": "https://via.placeholder.com/300x300.png?text=Rascador",
+        "imagen": "https://cdn.pacifiko.com/image/cache/catalog/p/YmIwZjAwOD-500x500.jpg",
         "stock": 7
     },
     {
@@ -41,7 +41,7 @@
         "descripcion": "Casita resistente para exteriores, ideal para climas lluviosos.",
         "precio": 28000,
         "categoria": "Perros",
-        "imagen": "https://via.placeholder.com/300x300.png?text=Casita",
+        "imagen": "https://ferreteriavidri.com/images/items/large/470973.jpg",
         "stock": 3
     },
     {
@@ -50,7 +50,7 @@
         "descripcion": "Arenero cerrado que ayuda a controlar los olores.",
         "precio": 18000,
         "categoria": "Gatos",
-        "imagen": "https://via.placeholder.com/300x300.png?text=Arenero",
+        "imagen": "https://naturalpetshop.es/storage/productos/gloria/arenero-ecologico-cerrado-azul-cielo.jpg",
         "stock": 10
     },
     {
@@ -59,7 +59,7 @@
         "descripcion": "Correa de 5 metros ideal para paseos largos.",
         "precio": 7000,
         "categoria": "Perros",
-        "imagen": "https://via.placeholder.com/300x300.png?text=Correa",
+        "imagen": "https://i5.walmartimages.com/seo/Flexi-Retractable-Dog-Leash-Tape-16-ft-Large-No-Color-Choice_7a24e9ee-5ac4-4a38-9205-c2cd8dd31029.dc3ff68085c6f3f7c7b342ef72c2ea58.jpeg",
         "stock": 20
     },
     {
@@ -68,7 +68,7 @@
         "descripcion": "Plato doble para agua y comida, fácil de limpiar.",
         "precio": 5000,
         "categoria": "Accesorios",
-        "imagen": "https://via.placeholder.com/300x300.png?text=Plato+doble",
+        "imagen": "https://www.redlemon.com.mx/cdn/shop/products/1_745fbe2f-cb0b-47e4-a79a-2c0c06a382cc.jpg",
         "stock": 25
     }
 ]
