@@ -22,7 +22,19 @@ class Product_DB:
         stmt= select(product_table)
         with self.engine.begin() as conn:
             result = conn.execute(stmt).mappings().all()
-        return [{"id": row["ID"], **{k: v for k, v in row.items() if k != "ID"}} for row in result]
+            products =[]
+            for row in result:
+                product = {
+                    "id": row["ID"],
+                    "nombre": row["nombre"],
+                    "categoria": row["categoria"],
+                    "descripcion": row["descripcion"],
+                    "precio": row["precio"],
+                    "imagen": row["imagen"],
+                    "stock": row["stock"]
+                }
+                products.append(product)
+        return products
 
 
     def delete_product(self, product_ID):
