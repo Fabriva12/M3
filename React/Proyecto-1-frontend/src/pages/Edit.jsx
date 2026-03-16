@@ -1,13 +1,19 @@
 import { useState } from "react";
 import "./Edit.css";
 import axios from "axios";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useAuth } from "../components/contexts/Auth.jsx";
 
-function Edit({ goTo, productId, products, setProducts, setLoading, }) {
-    const product = products.find(p => p.id === Number(productId));
-    const token = localStorage.getItem("token");
+function Edit({ products, setProducts, setLoading, }) {
+    const { id } = useParams();
+    const product = products.find(p => p.id === Number(id));
+    const { token } = useAuth();
+    const navigate = useNavigate();
 
     if (!product) {
+
         return <h2>Producto no encontrado</h2>;
+
     }
 
     const [formData, setFormData] = useState({
@@ -30,14 +36,14 @@ function Edit({ goTo, productId, products, setProducts, setLoading, }) {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await axios.put(`http://127.0.0.1:5000/product/upgrade_product/${productId}`, formData, {
+            const response = await axios.put(`http://127.0.0.1:5000/product/upgrade_product/${id}`, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            const updatedProducts = products.map(p => p.id === Number(productId) ? response.data : p);
+            const updatedProducts = products.map(p => p.id === Number(id) ? response.data : p);
             setProducts(updatedProducts);
-            goTo("admin");
+            navigate("/admin");
         } catch (error) {
             console.error("Error updating product:", error);
         } finally {
@@ -102,8 +108,8 @@ function Edit({ goTo, productId, products, setProducts, setLoading, }) {
                     <div className="btn-group">
                         <button className="save-btn" type="submit">Guardar Cambios</button>
 
-                        <button className="cancel-btn" type="button" onClick={() => goTo("admin")}>
-                            Cancelar
+                        <button className="cancel-btn" type="button">
+                            <Link to="/admin">Admin</Link>
                         </button>
                     </div>
                 </form>

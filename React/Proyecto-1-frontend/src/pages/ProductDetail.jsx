@@ -1,13 +1,23 @@
 
 import "./ProductDetail.css";
-function ProductDetail({ productId, goTo, products }) {
+import { Link, useParams } from "react-router-dom";
+import { useContext } from "react";
+import { ProductCartContext } from "../components/contexts/Product_cart.jsx";
+import { useAuth } from "../components/contexts/Auth.jsx";
 
-    const product = products.find(p => p.id === productId);
+function ProductDetail({ products }) {
+    const { token } = useAuth();
+    const { id } = useParams();
+    const product = products.find(p => p.id === Number(id));
+    const { setCartItems } = useContext(ProductCartContext);
 
     if (!product) {
         return <h2>Producto no encontrado</h2>;
     }
 
+    function addToCart(product) { 
+        setCartItems(prev => [...prev, product]);
+    }
     return (
         <div className="detail-page">
             <div className="detail-container-img">
@@ -23,9 +33,17 @@ function ProductDetail({ productId, goTo, products }) {
                 <p>{product.categoria}</p>
                 <h3>{product.descripcion}</h3>
 
-                <button className="btn" onClick={() => goTo("catalog")}>
+                <Link to="/catalog" className="btn">
                     Volver al Catálogo
-                </button>
+                </Link>
+
+                {token ? (
+                    <button className="btn" onClick={() => { addToCart(product); alert(`Producto ${product.nombre} añadido al carrito`) }}>
+                        Añadir al Carrito
+                    </button>
+                ) : (
+                    <p>Inicia sesión para añadir al carrito</p>
+                )}
             </div>
         </div>
     );

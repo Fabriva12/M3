@@ -19,24 +19,26 @@ def new_product(decoded):
     
         data = request.get_json()
         if data is None:
+            print("Invalid JSON received in /new_product")
             return jsonify({'message':'Invalid JSON'}),400
         nombre= data.get('nombre')
         categoria= data.get('categoria')
         descripcion= data.get('descripcion')
-        price=data.get('precio')
+        precio=data.get('precio')
         imagen=data.get('imagen')
         stock=data.get('stock')
 
-        if not nombre or not categoria or not descripcion or not price or not imagen or not stock:
+        if not nombre or not categoria or not descripcion or not precio or not imagen or not stock:
+            print("Missing fields in /new_product:", data)
             return jsonify({'message':'All fields are required'}),400
         else:
-            product_id =db_manager.insert_product(nombre, categoria, descripcion, price, imagen, stock)
+            product_id =db_manager.insert_product(nombre, categoria, descripcion, precio, imagen, stock)
             return jsonify({
             "id":product_id,
             "nombre": nombre,
             "categoria": categoria,
             "descripcion": descripcion,
-            "precio": price,
+            "precio": precio,
             "urlImagen": imagen,
             "stock": stock
         }),201 
@@ -76,18 +78,17 @@ def delete_product(decoded, id):
     
 
 # Con la siguiente funcion creamos un endpoint para actualizar productos y los eliminados de la cache
-@product_bp.route('/upgrade_product', methods=['PUT'])
+@product_bp.route('/upgrade_product/<int:id>', methods=['PUT'])
 @token_required()
-def upgrade_product(decoded):
+def upgrade_product(decoded, id):
     try:
         if decoded.get("role") != "admin":
             return Response("No autorizado", status=403)
+        product_ID = id 
         data = request.get_json()
-        
-        if data is None or "id" not in data:
-            return jsonify({'message':'ID es requerido'}),400
 
-        product_ID = data.get('id')
+        if data is None:
+            return jsonify({'message':'Invalid JSON'}),400
         update_data = {
             k: v for k, v in data.items()
             if k in {"nombre", "categoria", "descripcion", "precio", "imagen", "stock"} and v is not None
@@ -96,7 +97,15 @@ def upgrade_product(decoded):
         if not update_data:
             return jsonify({"message": "No se proporcionaron campos válidos para actualizar"}), 400
         db_manager.update_product(product_ID, update_data)
-        return jsonify({"success": True, "message": "Producto actualizado correctamente"}), 200
+        return jsonify({
+            "id":product_ID,
+            "nombre": update_data.get("nombre"),
+            "categoria": update_data.get("categoria"),
+            "descripcion": update_data.get("descripcion"),
+            "precio": update_data.get("precio"),
+            "imagen": update_data.get("imagen"),
+            "stock": update_data.get("stock")
+        }),201 
     except Exception as e:
         print("Error en /upgrade_product:", e)
         traceback.print_exc()

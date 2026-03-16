@@ -1,7 +1,8 @@
 
 import "./Catalog.css";
+import { Link } from "react-router-dom";
 
-function Catalog({ goTo, products }) {
+function Catalog({ products }) {
 
 
     return (
@@ -14,9 +15,9 @@ function Catalog({ goTo, products }) {
                         <h2>{data.nombre}</h2>
                         <h3>${data.precio}</h3>
                         <p>{data.categoria}</p>
-                        <button className="btn" onClick={() => goTo("detail", data.id, products)}>
+                        <Link to={`/detail/${data.id}`} className="btn">
                             Ver Detalles
-                        </button>
+                        </Link>
                     </div>
                 ))}
             </section>

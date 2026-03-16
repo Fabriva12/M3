@@ -2,12 +2,18 @@
 import axios from "axios";
 import { useState } from "react";
 import "./Login.css";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../components/contexts/Auth.jsx";
 
-function Login({ goTo, setLoading, setRole, setToken }) {
+function Login({ goTo, setLoading }) {
+
+    const { login } = useAuth();
     const [user, setUser] = useState({
         userEmail: "",
         userPassword: ""
     });
+
+    const navigate = useNavigate();
     const [message, setMessage] = useState("");
 
     const handleChange = (event) => {
@@ -28,22 +34,18 @@ function Login({ goTo, setLoading, setRole, setToken }) {
         try {
             const response = await axios.post("http://127.0.0.1:5000/user/login", loginData);
             if (response.data.success) {
-                const { token, user } = response.data;
+                const { token } = response.data;
+                const role = response.data.user.role;
+                login(token, role);
 
-                localStorage.setItem("token", token);
-                localStorage.setItem("role", user.role);
-                setRole(user.role);
-                setToken(token);
-                setMessage("Inicio de sesión exitoso");
-
-
-                goTo("home");
+                navigate("/");
             }
             else
                 setMessage("Correo electrónico o contraseña incorrectos");
         }
         catch (error) {
             setMessage("Error al iniciar sesión");
+            console.log("Login error:", error);
         }
         finally {
             setLoading(false);

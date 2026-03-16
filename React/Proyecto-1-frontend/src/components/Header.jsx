@@ -1,11 +1,16 @@
 
 import "./Header.css";
 import logo from "../img/icons/lucide-PawPrint-Outlined.svg";
-function Header({ goTo, role, setRole }) {
-    const logout = () => {
-        localStorage.clear();
-        setRole(null);
-        goTo("home");
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../components/contexts/Auth.jsx";
+
+function Header() {
+    const { logout, role } = useAuth();
+    const navigate = useNavigate();
+
+    const logoutHandler = () => {
+        logout()
+        navigate("/login");
     };
     return (
         <header className="container">
@@ -16,16 +21,34 @@ function Header({ goTo, role, setRole }) {
                 <h1 id="storename">PawStore</h1>
             </div>
             <nav>
-                <a className="nav-link" onClick={() => goTo("home")}>Inicio</a>
-                <a className="nav-link" onClick={() => goTo("catalog")}>Catálogo</a>
+                <Link to="/" className="nav-link">
+                    Inicio
+                </Link>
+                <Link to="/catalog" className="nav-link">
+                    Catálogo
+                </Link>
                 {role === "admin" && (
-                    <a className="nav-link" onClick={() => goTo("admin")}>Administración</a>
+                    <Link to="/admin" className="nav-link">
+                        Administración
+                    </Link>
+
                 )}
-                <a className="nav-link" onClick={() => goTo("contact")}>Contacto</a>
+                <Link to="/contact" className="nav-link">
+                    Contacto
+                </Link>
                 {role ? (
-                    <a className="nav-link" onClick={logout}>Cerrar Sesión</a>
+                    <>
+                        <Link to="/login" className="nav-link" onClick={logoutHandler}>
+                            Cerrar Sesión
+                        </Link>
+                        <Link to="/cart" className="nav-link">
+                            <img src="../img/icons/carrito.png" alt="Cart icon" />
+                        </Link>
+                    </>
                 ) : (
-                    <a className="nav-link" onClick={() => goTo("login")}>Iniciar Sesión</a>
+                    <Link to="/login" className="nav-link">
+                        Iniciar Sesión
+                    </Link>
                 )}
             </nav>
         </header>

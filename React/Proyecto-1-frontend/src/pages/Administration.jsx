@@ -2,11 +2,14 @@
 import { useState } from "react";
 import "./Administration.css";
 import axios from "axios";
-import { data } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../components/contexts/Auth.jsx";
 
-function ProductTable({ goTo, products, setProducts, setLoading, }) {
-    const token = localStorage.getItem("token");
-    if (localStorage.getItem("role") !== "admin") {
+
+function ProductTable({ products, setProducts, setLoading, }) {
+    const navigate = useNavigate();
+    const { role, token } = useAuth();
+    if (role !== "admin") {
         return <p>No tienes permiso para acceder a esta página.</p>;
     }
     const deleteProduct = async (id) => {
@@ -50,14 +53,14 @@ function ProductTable({ goTo, products, setProducts, setLoading, }) {
                         <tr key={product.id}>
                             <td>{product.id}</td>
                             <td>{product.nombre}</td>
-                            <td>${product.precio}</td>
+                            <td>₡{product.precio}</td>
                             <td>{product.categoria}</td>
                             <td>{product.stock}</td>
                             <td>
                                 <div className="actions">
                                     <button
                                         className="btn-edit"
-                                        onClick={() => goTo("edit", product.id)}
+                                        onClick={() => navigate(`/edit/${product.id}`)}
                                     >
                                         Editar
                                     </button>
@@ -82,9 +85,19 @@ function ProductTable({ goTo, products, setProducts, setLoading, }) {
     );
 }
 
-function CreateP({ goTo, products, setProducts, setLoading, }) {
-    const token = localStorage.getItem("token");
-
+function CreateP({ products, setProducts, setLoading, }) {
+    const { role, token } = useAuth();
+    if (role !== "admin") {
+        return <p>No tienes permiso para acceder a esta página.</p>;
+    }
+    const initialFormState = {
+        nombre: "",
+        descripcion: "",
+        precio: "",
+        categoria: "",
+        imagen: "",
+        stock: ""
+    };
     const [formData, setFormData] = useState({
         nombre: "",
         descripcion: "",
@@ -109,7 +122,7 @@ function CreateP({ goTo, products, setProducts, setLoading, }) {
             descripcion: formData.descripcion,
             precio: Number(formData.precio),
             categoria: formData.categoria,
-            imagen: formData.urlImagen,
+            imagen: formData.imagen,
             stock: Number(formData.stock)
         };
         setLoading(true);
@@ -120,7 +133,8 @@ function CreateP({ goTo, products, setProducts, setLoading, }) {
                 }
             });
             setProducts([...products, response.data]);
-            goTo("admin");
+            setFormData(initialFormState);
+
         } catch (error) {
             console.error("Error adding product:", error);
         } finally {
@@ -137,7 +151,6 @@ function CreateP({ goTo, products, setProducts, setLoading, }) {
                     <label className="form-label" htmlFor="nombre">Nombre:</label><br />
                     <input
                         type="text"
-                        id="nombre"
                         name="nombre"
                         placeholder="Nombre del producto"
                         value={formData.nombre}
@@ -147,7 +160,6 @@ function CreateP({ goTo, products, setProducts, setLoading, }) {
                     <label className="form-label" htmlFor="descripcion">Descripción:</label><br />
                     <textarea
                         type="text"
-                        id="descripcion"
                         name="descripcion"
                         placeholder="Descripción detallada del producto"
                         value={formData.descripcion}
@@ -157,7 +169,6 @@ function CreateP({ goTo, products, setProducts, setLoading, }) {
                     <label className="form-label" htmlFor="precio">Precio:</label><br />
                     <input
                         type="number"
-                        id="precio"
                         name="precio"
                         placeholder="0.00"
                         value={formData.precio}
@@ -167,7 +178,6 @@ function CreateP({ goTo, products, setProducts, setLoading, }) {
                     <label className="form-label" htmlFor="categoria">Categoría:</label><br />
                     <input
                         type="text"
-                        id="categoria"
                         name="categoria"
                         placeholder="Categoría del producto"
                         value={formData.categoria}
@@ -177,7 +187,6 @@ function CreateP({ goTo, products, setProducts, setLoading, }) {
                     <label className="form-label" htmlFor="URL">URL imagen:</label><br />
                     <input
                         type="text"
-                        id="imagen"
                         name="imagen"
                         placeholder="/ruta/imagen.jpg"
                         value={formData.imagen}
@@ -187,7 +196,6 @@ function CreateP({ goTo, products, setProducts, setLoading, }) {
                     <label className="form-label" htmlFor="stock">Stock:</label><br />
                     <input
                         type="number"
-                        id="stock"
                         name="stock"
                         placeholder="0"
                         value={formData.stock}

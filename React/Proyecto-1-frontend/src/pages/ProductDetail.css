@@ -30,7 +30,7 @@
     border: 0.1rem solid #DEE1E6FF;
     box-shadow: 0 0.1rem 0.3rem #171a1f17;
     padding: 2.0rem;
-
+    gap: 1rem;
     display: flex;
     flex-direction: column;
 }
