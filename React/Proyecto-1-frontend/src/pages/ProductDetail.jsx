@@ -2,7 +2,6 @@
 import "./ProductDetail.css";
 import { Link, useParams } from "react-router-dom";
 import { useContext } from "react";
-import { ProductCartContext } from "../components/contexts/Product_cart.jsx";
 import { useAuth } from "../components/contexts/Auth.jsx";
 
 function ProductDetail({ products }) {
@@ -15,7 +14,7 @@ function ProductDetail({ products }) {
         return <h2>Producto no encontrado</h2>;
     }
 
-    function addToCart(product) { 
+    function addToCart(product) {
         setCartItems(prev => [...prev, product]);
     }
     return (
@@ -38,7 +37,7 @@ function ProductDetail({ products }) {
                 </Link>
 
                 {token ? (
-                    <button className="btn" onClick={() => { addToCart(product); alert(`Producto ${product.nombre} añadido al carrito`) }}>
+                    <button className="btn" onClick={() => { addToCart(product) }}>
                         Añadir al Carrito
                     </button>
                 ) : (
