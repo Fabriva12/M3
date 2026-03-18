@@ -5,7 +5,7 @@ import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../components/contexts/Auth.jsx";
 
-function Login({ goTo, setLoading }) {
+function Login({ setLoading }) {
 
     const { login } = useAuth();
     const [user, setUser] = useState({
@@ -36,7 +36,10 @@ function Login({ goTo, setLoading }) {
             if (response.data.success) {
                 const { token } = response.data;
                 const role = response.data.user.role;
-                login(token, role);
+                const nombre = response.data.user.nombre;
+                
+                console.log("Login successful:", response.data);
+                login(token, role, nombre);
 
                 navigate("/");
             }
@@ -71,7 +74,7 @@ function Login({ goTo, setLoading }) {
                         Iniciar Sesión
                     </button>
 
-                    <button className="btn-register" type="button" onClick={() => goTo("createUser")}>
+                    <button className="btn-register" type="button" onClick={() => navigate("/createUser")}>
                         Regístrate aquí
                     </button>
                 </form>

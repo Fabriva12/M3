@@ -4,8 +4,10 @@ import logo from "../img/icons/lucide-PawPrint-Outlined.svg";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../components/contexts/Auth.jsx";
 
+
 function Header() {
-    const { logout, role } = useAuth();
+    const { logout, role, nombre } = useAuth();
+    console.log("Role in Header:", nombre, role);
     const navigate = useNavigate();
 
     const logoutHandler = () => {
@@ -39,7 +41,7 @@ function Header() {
                 {role ? (
                     <>
                         <Link to="/login" className="nav-link" onClick={logoutHandler}>
-                            Cerrar Sesión
+                            Cerrar Sesión de {nombre}
                         </Link>
                         <Link to="/cart" className="nav-link">
                             <img src="../img/icons/carrito.png" alt="Cart icon" />

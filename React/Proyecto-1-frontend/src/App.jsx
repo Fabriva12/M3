@@ -11,7 +11,7 @@ import Login from "./pages/Login";
 import Loading from "./components/Loading";
 import axios from "axios";
 import { Routes, Route } from "react-router-dom";
-
+import Cart from "./pages/Cart";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -46,6 +46,7 @@ function App() {
           <Route path="/edit/:id" element={<Edit products={products} setProducts={setProducts} setLoading={setLoading} />} />
           <Route path="/createUser" element={<CreateUser setLoading={setLoading} />} />
           <Route path="/login" element={<Login setLoading={setLoading} />} />
+          <Route path="/cart" element={<Cart />} />
         </Routes>
       </main>
 

@@ -48,7 +48,8 @@ def login():
             "user": {
                 "id": result["ID"],
                 "role": result["role"],
-                "correo": result["correo"]
+                "correo": result["correo"],
+                "nombre": result["nombre"]
             }
         }),200
     

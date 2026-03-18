@@ -1,22 +1,22 @@
 
 import "./ProductDetail.css";
 import { Link, useParams } from "react-router-dom";
-import { useContext } from "react";
+import { useProductCart } from "../components/contexts/Product_cart.jsx";
 import { useAuth } from "../components/contexts/Auth.jsx";
 
 function ProductDetail({ products }) {
-    const { token } = useAuth();
     const { id } = useParams();
+    const { token } = useAuth();
     const product = products.find(p => p.id === Number(id));
-    const { setCartItems } = useContext(ProductCartContext);
+    const { addItem } = useProductCart();
+    function addToCart(product) {
+        addItem(product);
+    }
 
     if (!product) {
         return <h2>Producto no encontrado</h2>;
     }
 
-    function addToCart(product) {
-        setCartItems(prev => [...prev, product]);
-    }
     return (
         <div className="detail-page">
             <div className="detail-container-img">
@@ -37,7 +37,7 @@ function ProductDetail({ products }) {
                 </Link>
 
                 {token ? (
-                    <button className="btn" onClick={() => { addToCart(product) }}>
+                    <button className="btn" onClick={() => { addToCart(product); }}>
                         Añadir al Carrito
                     </button>
                 ) : (
