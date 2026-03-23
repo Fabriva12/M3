@@ -3,14 +3,19 @@ import "./ProductDetail.css";
 import { Link, useParams } from "react-router-dom";
 import { useProductCart } from "../components/contexts/Product_cart.jsx";
 import { useAuth } from "../components/contexts/Auth.jsx";
+import { useState } from "react";
 
 function ProductDetail({ products }) {
+
     const { id } = useParams();
     const { token } = useAuth();
     const product = products.find(p => p.id === Number(id));
     const { addItem } = useProductCart();
-    function addToCart(product) {
-        addItem(product);
+    const [message, setMessage] = useState("");
+
+    function addToCart(id) {
+        addItem(id);
+        setMessage("Producto añadido al carrito");
     }
 
     if (!product) {
@@ -18,6 +23,7 @@ function ProductDetail({ products }) {
     }
 
     return (
+
         <div className="detail-page">
             <div className="detail-container-img">
                 <img
@@ -25,7 +31,7 @@ function ProductDetail({ products }) {
                     alt={product.nombre}
                 />
             </div>
-
+            {message && <p>{message}</p>}
             <div className="detail-container">
                 <h1>{product.nombre}</h1>
                 <h2>${product.precio}</h2>
@@ -37,8 +43,9 @@ function ProductDetail({ products }) {
                 </Link>
 
                 {token ? (
-                    <button className="btn" onClick={() => { addToCart(product); }}>
+                    <button className="btn" onClick={() => { addToCart(id); }}>
                         Añadir al Carrito
+
                     </button>
                 ) : (
                     <p>Inicia sesión para añadir al carrito</p>

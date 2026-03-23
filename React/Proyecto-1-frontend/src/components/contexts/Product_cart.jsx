@@ -8,13 +8,13 @@ function ProductCartProvider({ children }) {
     const [cartItems, setCartItems] = React.useState([]);
     const { token } = useAuth();
 
-    const addItem = async (product) => {
+    const addItem = async (id) => {
+
         try {
-            const response = await axios.post("http://127.0.0.1:5000/cart/items", {
+            const response = await axios.post("http://127.0.0.1:5000/cart/items", { product_id: id }, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 },
-                product
             });
 
             setCartItems(response.data);

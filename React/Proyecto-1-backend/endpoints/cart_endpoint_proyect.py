@@ -9,7 +9,7 @@ cart_bp = Blueprint('cart', __name__)
 db_manager= Product_DB()
 jwt_manager= JWT_Manager()
 
-@cart_bp.route('/cart/items', methods=['POST'])
+@cart_bp.route('/items', methods=['POST'])
 @token_required()
 def add_item(decoded):
     try:
@@ -43,7 +43,7 @@ def add_item(decoded):
         return Response("Error interno", status=500)
     
 
-@cart_bp.route('/cart/items', methods=['GET'])
+@cart_bp.route('/see_items', methods=['GET'])
 @token_required()
 def get_cart(decoded):
     try:
@@ -59,7 +59,7 @@ def get_cart(decoded):
         return Response("Error interno", status=500)
     
 
-@cart_bp.route('/cart/items', methods=['DELETE'])
+@cart_bp.route('/no_items', methods=['DELETE'])
 @token_required()
 def clear_item(decoded):
     try:

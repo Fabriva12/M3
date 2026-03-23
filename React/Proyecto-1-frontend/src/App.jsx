@@ -46,7 +46,7 @@ function App() {
           <Route path="/edit/:id" element={<Edit products={products} setProducts={setProducts} setLoading={setLoading} />} />
           <Route path="/createUser" element={<CreateUser setLoading={setLoading} />} />
           <Route path="/login" element={<Login setLoading={setLoading} />} />
-          <Route path="/cart" element={<Cart />} />
+          <Route path="/cart" element={<Cart products={products} />} />
         </Routes>
       </main>
 

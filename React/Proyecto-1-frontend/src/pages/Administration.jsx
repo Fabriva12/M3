@@ -33,7 +33,7 @@ function ProductTable({ products, setProducts, setLoading, }) {
     };
 
     return (
-        <div className="edit-container">
+        <div className="table-page">
             <h1 className="title">Administración de productos</h1>
 
             <table className="products-table">
@@ -66,7 +66,7 @@ function ProductTable({ products, setProducts, setLoading, }) {
                                     </button>
 
                                     <button
-                                        className="btn-edit"
+                                        className="btn-edit btn-delete"
                                         onClick={() => {
                                             if (window.confirm("¿Seguro que quieres eliminar este producto?")) {
                                                 deleteProduct(product.id);

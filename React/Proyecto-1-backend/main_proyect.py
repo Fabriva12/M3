@@ -9,6 +9,7 @@ app.register_blueprint(user_bp, url_prefix='/user')
 app.register_blueprint(product_bp, url_prefix='/product')
 app.register_blueprint(cart_bp, url_prefix='/cart')
 CORS(app)
+CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
 
 if __name__ == "__main__":
     app.run(debug=True)

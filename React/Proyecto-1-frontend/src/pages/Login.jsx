@@ -37,14 +37,15 @@ function Login({ setLoading }) {
                 const { token } = response.data;
                 const role = response.data.user.role;
                 const nombre = response.data.user.nombre;
-                
+
                 console.log("Login successful:", response.data);
                 login(token, role, nombre);
 
                 navigate("/");
             }
-            else
-                setMessage("Correo electrónico o contraseña incorrectos");
+            else {
+                setMessage("Credenciales incorrectas. Inténtalo de nuevo.");
+            }
         }
         catch (error) {
             setMessage("Error al iniciar sesión");
@@ -61,7 +62,7 @@ function Login({ setLoading }) {
             <div className="container-login">
                 <h2>Iniciar Sesión</h2>
 
-                {message && <p>{message}</p>}
+                {message && <p className="error-message">{message}</p>}
 
                 <form className="login-form" onSubmit={handleSubmit}>
                     <label>Correo Electrónico:</label>

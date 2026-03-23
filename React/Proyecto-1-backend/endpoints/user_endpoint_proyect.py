@@ -39,7 +39,7 @@ def login():
         
         result = db_manager.get_user(data.get('correo'), data.get('contraseña'))
         if result == None:
-                return jsonify({"error":"Usuario no registrado"}),401 
+                return jsonify({"success":False}),200 
         
         token = jwt_manager.encode({"id": result["ID"],"role": result["role"]})
         return jsonify({

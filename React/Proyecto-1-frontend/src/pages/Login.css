@@ -151,3 +151,10 @@
     opacity: 0.4;
     cursor: not-allowed;
 }
+
+.error-message {
+    color: #DE3B40;
+    font-family: Inter, sans-serif;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+}

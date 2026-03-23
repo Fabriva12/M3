@@ -69,23 +69,46 @@ class Product_DB:
             return False
         
 
-
-    def get_create_cart(self, user_id):
+    def get_or_create_cart(self, user_id):
         with self.engine.begin() as conn:
-            stmt = select(carts_table).where(carts_table.c.user_id == user_id, carts_table.c.estado == "activo")
+
+            stmt = select(carts_table).where(
+            carts_table.c.user_id == user_id,
+            carts_table.c.estado == "activo"
+        )
             result = conn.execute(stmt).mappings().first()
-            if not result:
-                stmt = insert(carts_table).values(user_id=user_id)
-                result = conn.execute(stmt)
-            cart_id = result.scalar()
-        return cart_id
+
+            if result:
+                return result["id"]
+
+            stmt = insert(carts_table).values(user_id=user_id,estado="activo").returning(carts_table.c.id)
+            new_cart = conn.execute(stmt).scalar()
+            return new_cart
         
     
-    def add_item_to_cart(self, cart_id, producto_id, cantidad,precio):
+    def add_item(self, cart_id, producto_id, cantidad, precio):
         with self.engine.begin() as conn:
-            stmt = insert(cart_items_table).values(cart_id=cart_id, producto_id=producto_id, cantidad=cantidad, precio=precio)
-            conn.execute(stmt)
-        return True
+
+            stmt = select(cart_items_table).where(cart_items_table.c.cart_id == cart_id,cart_items_table.c.producto_id == producto_id)
+            existing = conn.execute(stmt).mappings().first()
+
+            if existing:
+                stmt = cart_items_table.update().where(
+                    cart_items_table.c.id == existing["id"]
+                ).values(
+                    cantidad=existing["cantidad"] + cantidad
+                )
+                conn.execute(stmt)
+            else:
+                stmt = insert(cart_items_table).values(
+                    cart_id=cart_id,
+                    producto_id=producto_id,
+                    cantidad=cantidad,
+                    precio=precio
+                )
+                conn.execute(stmt)
+
+            return True
 
     def get_cart_items(self, cart_id):
         with self.engine.begin() as conn:
