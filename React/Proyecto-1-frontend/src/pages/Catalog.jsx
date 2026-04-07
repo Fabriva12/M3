@@ -1,22 +1,23 @@
 
-import data from "../data/products.json";
-import "../style/Catalog.css";
+import "./Catalog.css";
+import { Link } from "react-router-dom";
 
-function Catalog({ goTo }) {
+function Catalog({ products }) {
+
+
     return (
         <div className="catalog-page">
             <h1>Catálogo de productos</h1>
             <section className="catalog-container">
-                {data.map((product) => (
-                    <div key={product.id} className="card">
-                        <img src={product.imagen} alt={product.nombre} />
-                        <h2>{product.nombre}</h2>
-                        <h3>${product.precio}</h3>
-                        <p>{product.categoria}</p>
-                        <p className="product-des">{product.descripcion}</p>
-                        <button className="btn" onClick={() => goTo("detail", product.id)}>
+                {products.map((data) => (
+                    <div key={data.id} className="card">
+                        <img src={data.imagen} alt={data.nombre} />
+                        <h2>{data.nombre}</h2>
+                        <h3>${data.precio}</h3>
+                        <p>{data.categoria}</p>
+                        <Link to={`/detail/${data.id}`} className="btn">
                             Ver Detalles
-                        </button>
+                        </Link>
                     </div>
                 ))}
             </section>

@@ -1,15 +1,29 @@
 
-import data from "../data/products.json";
-import "../style/ProductDetail.css";
-function ProductDetail({ productId, goTo }) {
+import "./ProductDetail.css";
+import { Link, useParams } from "react-router-dom";
+import { useProductCart } from "../components/contexts/Product_cart.jsx";
+import { useAuth } from "../components/contexts/Auth.jsx";
+import { useState } from "react";
 
-    const product = data.find(p => p.id === productId);
+function ProductDetail({ products }) {
+
+    const { id } = useParams();
+    const { token } = useAuth();
+    const product = products.find(p => p.id === Number(id));
+    const { addItem } = useProductCart();
+    const [message, setMessage] = useState("");
+
+    function addToCart(id) {
+        addItem(id);
+        setMessage("Producto añadido al carrito");
+    }
 
     if (!product) {
         return <h2>Producto no encontrado</h2>;
     }
 
     return (
+
         <div className="detail-page">
             <div className="detail-container-img">
                 <img
@@ -17,16 +31,25 @@ function ProductDetail({ productId, goTo }) {
                     alt={product.nombre}
                 />
             </div>
-
+            {message && <p>{message}</p>}
             <div className="detail-container">
                 <h1>{product.nombre}</h1>
                 <h2>${product.precio}</h2>
                 <p>{product.categoria}</p>
                 <h3>{product.descripcion}</h3>
 
-                <button className="btn" onClick={() => goTo("catalog")}>
+                <Link to="/catalog" className="btn">
                     Volver al Catálogo
-                </button>
+                </Link>
+
+                {token ? (
+                    <button className="btn" onClick={() => { addToCart(id); }}>
+                        Añadir al Carrito
+
+                    </button>
+                ) : (
+                    <p>Inicia sesión para añadir al carrito</p>
+                )}
             </div>
         </div>
     );

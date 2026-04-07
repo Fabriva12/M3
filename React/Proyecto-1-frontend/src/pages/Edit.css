@@ -1,0 +1,116 @@
+.edit-container {
+    max-width: 36rem;
+    width: 90%;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 0.4rem;
+    border: 0.1rem solid #DEE1E6FF;
+    box-shadow: 0 0.125rem 0.3rem rgba(23, 26, 31, 0.09);
+    margin: 2rem auto;
+    box-sizing: border-box;
+}
+
+.edit-page h2 {
+    text-align: center;
+    top: 6.5rem;
+    left: 38.3rem;
+    font-family: Archivo;
+    font-size: 1.9rem;
+    line-height: 2.25rem;
+    font-weight: 600;
+    color: #171A1FFF;
+}
+
+.edit-form {
+    margin-bottom: 1.6rem;
+}
+
+.edit-form label {
+    font-family: Inter, sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 0.2rem;
+    display: block;
+}
+
+.edit-form input,
+.edit-form textarea {
+    width: 100%;
+    padding: 0.6rem 0.8rem;
+    font-family: Inter, sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.4rem;
+    font-weight: 400;
+    background: #fff;
+    border-radius: 0.4rem;
+    border: 0.1rem solid #DEE1E6FF;
+    outline: none;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+}
+
+.edit-form input:hover,
+.edit-form input:focus,
+.edit-form textarea:hover,
+.edit-form textarea:focus {
+    border-color: #4A90E2;
+    /* borde azul al enfocar */
+}
+
+.btn-group {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    justify-content: flex-start;
+}
+
+.save-btn {
+    width: 10.2rem;
+    height: 2.5rem;
+    padding: 0 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Inter;
+    font-size: 1rem;
+    line-height: 1.6rem;
+    font-weight: 500;
+    color: #FFFFFFFF;
+    background: #636AE8FF;
+    opacity: 1;
+    border-radius: 0.4rem;
+    border-width: 0rem;
+    border-color: #000000FF;
+    border-style: solid;
+}
+
+.save-btn:hover {
+    color: #FFFFFFFF;
+    background: rgb(50, 56, 175);
+}
+
+.cancel-btn {
+    width: 6.4rem;
+    height: 2.5rem;
+    padding: 0 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Inter;
+    font-size: 1rem;
+    line-height: 1.6rem;
+    font-weight: 500;
+    color: #171A1FFF;
+    background: #FFFFFFFF;
+    opacity: 1;
+    border-radius: 0.4rem;
+    border-width: 0.1rem;
+    border-color: #DEE1E6FF;
+    border-style: solid;
+}
+
+.cancel-btn:hover {
+    color: rgb(0, 0, 0);
+    background: rgb(168, 163, 163);
+}
