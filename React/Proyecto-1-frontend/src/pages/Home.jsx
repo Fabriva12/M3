@@ -1,7 +1,10 @@
 
 import "./Home.css";
 import { Link } from "react-router-dom";
-function Home() {
+function Home({ products }) {
+    const featuredProducts = [...products]
+        .sort((a, b) => b.stock - a.stock)
+        .slice(0, 6);
     return (
         <section className="home-container">
             <h1>Bienvenido a PawStore </h1>
@@ -10,9 +13,27 @@ function Home() {
             <Link to="/catalog" className="btn">
                 Ver Productos
             </Link>
-            <p className="info-text">“Esta es la página principal de la aplicación. Más adelante aquí se podrán mostrar productos destacados.”</p>
+            <h2 className="featured-title">Productos Destacados</h2>
+
+            <div className="featured-grid">
+                {featuredProducts.map((product) => (
+                    <div key={product.ID} className="product-card">
+
+                        <img src={product.imagen} alt={product.nombre} />
+
+                        <h3>{product.nombre}</h3>
+
+                        <p className="price">₡{product.precio}</p>
+
+                        <Link to={`/detail/${product.id}`} className="btn-small">
+                            Ver detalles
+                        </Link>
+                    </div>
+                ))}
+            </div>
         </section>
     );
+
 }
 
 export default Home;

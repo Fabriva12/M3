@@ -1,42 +1,147 @@
-import { useContext } from "react";
-import { ProductCartContext } from "../components/contexts/Product_cart.jsx";
-import { Link } from "react-router-dom";
-import "./Cart.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { useAuth } from "../components/contexts/Auth.jsx";
+import { useNavigate } from "react-router-dom";
+import { useProductCart } from "../components/contexts/Product_cart.jsx";
+import "./Cart.css";
 
-function Cart({ products }) {
-    const { role } = useAuth();
+function Cart({ setLoading }) {
+    const navigate = useNavigate()
+    const { role, token } = useAuth();
+    const { cartItems, setCartItems } = useProductCart();
+
+    useEffect(() => {
+        async function fetchCart() {
+            setLoading(true);
+
+            try {
+                const response = await axios.get(
+                    "http://127.0.0.1:5000/cart/see_items",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+
+                setCartItems(response.data);
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setLoading(false);
+            }
+
+        }
+
+        if (token) {
+            fetchCart();
+        }
+    }, [token]);
+
     if (role === null) {
         return <h2>Inicia sesión para ver tu carrito</h2>;
     }
-    const { cartItems, setCartItems } = useContext(ProductCartContext);
+    if (!cartItems) {
+        return null;
+    }
+
+    const updateQuantity = async (productId, newQuantity) => {
+        console.log("Updating product", productId, "to quantity", newQuantity);
+        if (newQuantity < 1) return;
+        try {
+            const response = await axios.put(
+                "http://127.0.0.1:5000/cart/update_item",
+                {
+                    producto_id: productId,
+                    cantidad: newQuantity
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            setCartItems(response.data);
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const removeItem = async (productId) => {
+        console.log("Removing product", productId);
+
+        try {
+            const response = await axios.delete(
+                `http://127.0.0.1:5000/cart/no_items/${productId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            setCartItems(response.data);
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
     return (
-        <section className="cart-container">
-            {cartItems.map((item) => {
-                const product = products.find(p => p.id === item.id);
+        <section className="cart">
+            <h1 className="cart-title">Carrito de compras</h1>
 
-                if (!product) return null;
+            <div className="cart-layout">
 
-                return (
-                    <div key={item.id} className="card">
-                        <img src={product.imagen} alt={product.nombre} />
-                        <h2>{product.nombre}</h2>
-                        <h3>${product.precio}</h3>
-                        <p>{product.categoria}</p>
+                {/* LISTA DE PRODUCTOS */}
+                <div className="cart-items">
+                    {cartItems?.items?.length > 0 &&
+                        [...cartItems.items]
+                            .sort((a, b) => a.id - b.id)
+                            .map((item) => (
+                                <div key={item.id} className="cart-item">
 
-                        <p>Cantidad: {item.cantidad}</p>
-                        <p>Total: ${product.precio * item.cantidad}</p>
+                                    <img
+                                        src={item.imagen}
+                                        alt={item.nombre}
+                                        className="image"
+                                    />
 
-                        <Link to={`/detail/${item.id}`} className="btn">
-                            Ver Detalles
-                        </Link>
-                    </div>
-                );
-            })}
+                                    <div className="item-info">
+                                        <h2 className="text">{item.nombre}</h2>
+                                        <p className="price">Precio: ₡{item.precio}</p>
+                                    </div>
+
+                                    <div className="quantity">
+                                        <button onClick={() => updateQuantity(item.producto_id, item.cantidad - 1)}>-</button>
+                                        <span>{item.cantidad}</span>
+                                        <button onClick={() => updateQuantity(item.producto_id, item.cantidad + 1)}>+</button>
+                                    </div>
+
+                                    <div className="subtotal">
+                                        <p>Subtotal:</p>
+                                        <strong>₡{item.subtotal}</strong>
+                                    </div>
+
+                                    <button className="remove" onClick={() => removeItem(item.producto_id)}>
+                                        Eliminar
+                                    </button>
+
+                                </div>
+                            ))}
+                </div>
+
+                {/* RESUMEN */}
+                <div className="cart-summary">
+                    <h2>Total: ₡{cartItems.total}</h2>
+                    <button className="checkout" onClick={() => navigate("/check")}>Continuar al checkout</button>
+                </div>
+
+            </div>
         </section>
     );
 }
-
 
 export default Cart;

@@ -79,12 +79,15 @@
     border-width: 0rem;
     border-color: #000000FF;
     border-style: solid;
+    transition: all 0.25s ease;
 }
 
 
 .catalog-container .btn:hover {
-    color: #FFFFFFFF;
-    background: #636AE8FF;
+    background: #4f56d6;
+    transform: translateY(-0.1rem);
+    box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.15);
+    cursor: pointer;
 }
 
 

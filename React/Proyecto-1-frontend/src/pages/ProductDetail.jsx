@@ -16,6 +16,9 @@ function ProductDetail({ products }) {
     function addToCart(id) {
         addItem(id);
         setMessage("Producto añadido al carrito");
+        setTimeout(() => {
+            setMessage("");
+        }, 2000);
     }
 
     if (!product) {
@@ -31,7 +34,7 @@ function ProductDetail({ products }) {
                     alt={product.nombre}
                 />
             </div>
-            {message && <p>{message}</p>}
+            {message && <div className="success-message">{message}</div>}
             <div className="detail-container">
                 <h1>{product.nombre}</h1>
                 <h2>${product.precio}</h2>
