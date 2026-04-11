@@ -13,6 +13,7 @@ import axios from "axios";
 import { Routes, Route } from "react-router-dom";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import Contact from "./pages/Contact";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -50,6 +51,7 @@ function App() {
           <Route path="/login" element={<Login setLoading={setLoading} />} />
           <Route path="/cart" element={<Cart products={products} setLoading={setLoading} />} />
           <Route path="/check" element={<Checkout />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
 
