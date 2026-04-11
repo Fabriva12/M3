@@ -12,6 +12,8 @@ import Loading from "./components/Loading";
 import axios from "axios";
 import { Routes, Route } from "react-router-dom";
 import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import Contact from "./pages/Contact";
 
 function App() {
   const [products, setProducts] = useState([]);
@@ -39,14 +41,17 @@ function App() {
 
       <main>
         <Routes>
-          <Route path="/" element={<Home />} /><Route path="/catalog" element={<Catalog products={products} />} />
+          <Route path="/" element={<Home products={products} />} />
+          <Route path="/catalog" element={<Catalog products={products} />} />
           <Route path="/detail/:id" element={<ProductDetail products={products} />} />
           <Route path="/admin" element={<><ProductTable products={products} setProducts={setProducts} setLoading={setLoading} />
             <CreateP products={products} setProducts={setProducts} setLoading={setLoading} /></>} />
           <Route path="/edit/:id" element={<Edit products={products} setProducts={setProducts} setLoading={setLoading} />} />
           <Route path="/createUser" element={<CreateUser setLoading={setLoading} />} />
           <Route path="/login" element={<Login setLoading={setLoading} />} />
-          <Route path="/cart" element={<Cart products={products} />} />
+          <Route path="/cart" element={<Cart products={products} setLoading={setLoading} />} />
+          <Route path="/check" element={<Checkout />} />
+          <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>
 

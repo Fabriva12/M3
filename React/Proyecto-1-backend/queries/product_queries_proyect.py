@@ -1,7 +1,7 @@
 from unittest import result
 
-from sqlalchemy import insert, select, update 
-from create_tables_proyect import engine, product_table, carts_table, cart_items_table
+from sqlalchemy import insert, select, update, func 
+from create_tables_proyect import engine, product_table, carts_table, cart_items_table, facture_table, facture_items_table
 
 
 # con esta clase manejamos las consultas de productos a la base de datos
@@ -69,59 +69,3 @@ class Product_DB:
             return False
         
 
-    def get_or_create_cart(self, user_id):
-        with self.engine.begin() as conn:
-
-            stmt = select(carts_table).where(
-            carts_table.c.user_id == user_id,
-            carts_table.c.estado == "activo"
-        )
-            result = conn.execute(stmt).mappings().first()
-
-            if result:
-                return result["id"]
-
-            stmt = insert(carts_table).values(user_id=user_id,estado="activo").returning(carts_table.c.id)
-            new_cart = conn.execute(stmt).scalar()
-            return new_cart
-        
-    
-    def add_item(self, cart_id, producto_id, cantidad, precio):
-        with self.engine.begin() as conn:
-
-            stmt = select(cart_items_table).where(cart_items_table.c.cart_id == cart_id,cart_items_table.c.producto_id == producto_id)
-            existing = conn.execute(stmt).mappings().first()
-
-            if existing:
-                stmt = cart_items_table.update().where(
-                    cart_items_table.c.id == existing["id"]
-                ).values(
-                    cantidad=existing["cantidad"] + cantidad
-                )
-                conn.execute(stmt)
-            else:
-                stmt = insert(cart_items_table).values(
-                    cart_id=cart_id,
-                    producto_id=producto_id,
-                    cantidad=cantidad,
-                    precio=precio
-                )
-                conn.execute(stmt)
-
-            return True
-
-    def get_cart_items(self, cart_id):
-        with self.engine.begin() as conn:
-            stmt = select(cart_items_table).where(cart_items_table.c.cart_id == cart_id)
-            result = conn.execute(stmt).mappings().all()
-            items = []
-            for row in result:
-                item = {
-                    "id": row["id"],
-                    "cart_id": row["cart_id"],
-                    "producto_id": row["producto_id"],
-                    "cantidad": row["cantidad"],
-                    "precio": row["precio"]
-                }
-                items.append(item)
-        return items
